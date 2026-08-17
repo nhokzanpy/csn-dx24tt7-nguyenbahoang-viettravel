@@ -9,35 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="description"
-        content="VietTravel - Website giới thiệu các địa điểm du lịch nổi bật tại Việt Nam."
-    >
-
     <title>VietTravel - Khám phá Việt Nam</title>
-
-
-    <!-- =========================
-         FAVICON
-    ========================== -->
-
-    <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="images/logo/favicon-32x32.png"
-    >
-
-    <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="images/logo/favicon-180x180.png"
-    >
-
-
-    <!-- =========================
-         CSS
-    ========================== -->
 
     <link
         rel="stylesheet"
@@ -48,328 +20,325 @@
 
 <body>
 
+    <!-- ========================================
+         HEADER
+    ========================================= -->
 
-    <!-- =========================
-     HEADER / MENU
-========================= -->
+    <header>
 
-<header>
+        <nav class="navbar">
 
-    <nav>
-
-        <!-- LOGO -->
-
-        <a
-            href="#home"
-            class="logo"
-            aria-label="VietTravel - Trang chủ"
-        >
-
-            <img
-                src="images/logo/logo-icon.png"
-                alt="VietTravel Logo"
-            >
-
-            <span>
-                VietTravel
-            </span>
-
-        </a>
+            <div class="nav-container">
 
 
-        <!-- MENU -->
+                <!-- LOGO -->
 
-        <ul class="nav-links">
+                <a
+                    href="#home"
+                    class="logo"
+                >
 
-            <li>
-                <a href="#home">
-                    Trang chủ
-                </a>
-            </li>
+                    <img
+                        src="images/logo/logo_icon.png"
+                        alt="VietTravel Logo"
+                    >
 
-            <li>
-                <a href="#locations">
-                    Địa điểm
-                </a>
-            </li>
-
-            <li>
-                <a href="#about">
-                    Về chúng tôi
-                </a>
-            </li>
-
-        </ul>
-
-
-        <!-- DARK MODE -->
-
-        <button
-            id="theme-toggle"
-            class="theme-toggle"
-            type="button"
-            aria-label="Đổi giao diện sáng tối"
-            title="Đổi giao diện sáng/tối"
-        >
-            🌙
-        </button>
-
-    </nav>
-
-</header>
-
-
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
-
-    <section
-        class="hero"
-        id="home"
-    >
-
-        <div class="hero-content">
-
-            <h1>
-                Khám phá vẻ đẹp Việt Nam
-            </h1>
-
-            <p>
-                Những điểm đến tuyệt vời đang chờ bạn khám phá
-            </p>
-
-            <button
-                type="button"
-                onclick="document.getElementById('locations').scrollIntoView({ behavior: 'smooth' })"
-            >
-                Khám phá ngay
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         LOCATIONS
-    ====================================================== -->
-
-    <section
-        class="locations"
-        id="locations"
-    >
-
-        <div class="container">
-
-
-            <!-- =========================
-                 FILTER BAR
-            ========================== -->
-
-            <div class="filter-bar">
-
-
-                <!-- SEARCH -->
-
-                <div class="search-box">
-
-                    <span class="search-icon">
-                        🔎
+                    <span>
+                        VietTravel
                     </span>
 
-                    <input
-                        type="text"
-                        id="search-input"
-                        placeholder="Tìm kiếm địa điểm..."
-                        autocomplete="off"
+                </a>
+
+
+
+                <!-- NAV RIGHT -->
+
+                <div class="nav-right">
+
+                    <ul class="nav-links">
+
+                        <li>
+                            <a href="#home">
+                                Trang chủ
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#locations">
+                                Địa điểm
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#about">
+                                Về chúng tôi
+                            </a>
+                        </li>
+
+                    </ul>
+
+
+                    <button
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        type="button"
+                        aria-label="Đổi giao diện sáng tối"
                     >
+                        🌙
+                    </button>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+
+    <main>
+
+
+        <!-- ====================================
+             HERO
+        ===================================== -->
+
+        <section
+            id="home"
+            class="hero"
+        >
+
+            <div class="hero-content reveal">
+
+                <h1>
+                    Khám phá vẻ đẹp Việt Nam
+                </h1>
+
+                <p>
+                    Những điểm đến tuyệt vời đang chờ bạn khám phá
+                </p>
+
+                <a
+                    href="#locations"
+                    class="hero-button"
+                >
+                    Khám phá ngay
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ====================================
+             LOCATIONS
+        ===================================== -->
+
+        <section
+            id="locations"
+            class="locations"
+        >
+
+            <div class="container">
+
+
+                <!-- ============================
+                     FILTER
+                ============================= -->
+
+                <div class="filter-container reveal">
+
+
+                    <div class="search-box">
+
+                        <span class="search-icon">
+                            🔎
+                        </span>
+
+                        <input
+                            type="text"
+                            id="search-input"
+                            placeholder="Tìm kiếm địa điểm..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+
+                    <select
+                        id="province-filter"
+                        aria-label="Lọc theo tỉnh thành"
+                    >
+
+                        <option value="all">
+                            Tất cả tỉnh/thành
+                        </option>
+
+                    </select>
+
+
+
+                    <select
+                        id="sort-filter"
+                        aria-label="Sắp xếp địa điểm"
+                    >
+
+                        <option value="default">
+                            Sắp xếp
+                        </option>
+
+                        <option value="az">
+                            Tên A → Z
+                        </option>
+
+                        <option value="za">
+                            Tên Z → A
+                        </option>
+
+                    </select>
+
+
+
+                    <button
+                        id="reset-filter"
+                        class="reset-filter"
+                        type="button"
+                    >
+                        ↻ Xóa bộ lọc
+                    </button>
 
                 </div>
 
 
-                <!-- PROVINCE FILTER -->
 
-                <select
-                    id="province-filter"
-                    aria-label="Lọc theo tỉnh thành"
+                <!-- ============================
+                     EXTRA ACTIONS
+                ============================= -->
+
+                <div class="favorite-filter reveal">
+
+                    <button
+                        id="show-all"
+                        class="favorite-filter-btn active"
+                        type="button"
+                    >
+                        Tất cả
+                    </button>
+
+
+                    <button
+                        id="show-favorites"
+                        class="favorite-filter-btn"
+                        type="button"
+                    >
+                        ❤️ Yêu thích
+                    </button>
+
+
+                    <button
+                        id="random-location"
+                        class="random-location-btn"
+                        type="button"
+                    >
+                        🎲 Gợi ý cho tôi
+                    </button>
+
+                </div>
+
+
+
+                <h2 class="section-title reveal">
+                    Điểm đến nổi bật
+                </h2>
+
+
+
+                <!-- ============================
+                     CARD LIST
+                ============================= -->
+
+                <div
+                    id="location-list"
+                    class="location-list"
                 >
-
-                    <option value="all">
-                        Tất cả tỉnh/thành
-                    </option>
-
-                </select>
+                </div>
 
 
-                <!-- SORT -->
 
-                <select
-                    id="sort-filter"
-                    aria-label="Sắp xếp địa điểm"
+                <!-- ============================
+                     PAGINATION
+                ============================= -->
+
+                <div
+                    id="pagination"
+                    class="pagination"
                 >
-
-                    <option value="default">
-                        Sắp xếp
-                    </option>
-
-                    <option value="az">
-                        Tên A → Z
-                    </option>
-
-                    <option value="za">
-                        Tên Z → A
-                    </option>
-
-                </select>
-
-
-                <!-- RESET -->
-
-                <button
-                    id="reset-filter"
-                    class="reset-filter"
-                    type="button"
-                >
-
-                    <span>
-                        ↻
-                    </span>
-
-                    Xóa bộ lọc
-
-                </button>
+                </div>
 
             </div>
 
-
-            <!-- =========================
-                 TITLE
-            ========================== -->
-
-            <h2>
-                Điểm đến nổi bật
-            </h2>
+        </section>
 
 
-            <!-- =========================
-                 LOCATION LIST
-            ========================== -->
 
-            <div
-                id="location-list"
-                class="location-list"
-            >
-                <!-- JavaScript tạo card -->
+        <!-- ====================================
+             ABOUT
+        ===================================== -->
+
+        <section
+            id="about"
+            class="about"
+        >
+
+            <div class="container reveal">
+
+                <h2>
+                    Về VietTravel
+                </h2>
+
+                <p>
+                    VietTravel giúp bạn khám phá những địa điểm
+                    du lịch nổi bật trên khắp Việt Nam.
+                    Từ thiên nhiên hùng vĩ, những bãi biển tuyệt đẹp
+                    đến các thành phố giàu văn hóa và lịch sử.
+                </p>
+
             </div>
 
+        </section>
 
-            <!-- =========================
-                 PAGINATION
-            ========================== -->
-
-            <div
-                id="pagination"
-                class="pagination"
-            >
-            </div>
+    </main>
 
 
-        </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         ABOUT
-    ====================================================== -->
-
-    <section
-        class="about"
-        id="about"
-    >
-
-        <div class="about-container">
-
-            <h2>
-                Về chúng tôi
-            </h2>
-
-            <p>
-                VietTravel là website giới thiệu những địa điểm
-                du lịch nổi bật tại Việt Nam.
-            </p>
-
-            <p>
-                Chúng tôi mong muốn mang đến cho người dùng
-                những thông tin hữu ích về các địa điểm du lịch,
-                văn hóa và cảnh đẹp trên khắp đất nước.
-            </p>
-
-            <p>
-                Hãy cùng VietTravel khám phá vẻ đẹp đa dạng
-                và đầy hấp dẫn của Việt Nam.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
+    <!-- ========================================
          FOOTER
-    ====================================================== -->
+    ========================================= -->
 
-    <footer class="footer">
+    <footer>
 
-        <div class="footer-container">
+        <div class="container">
 
-            <div class="footer-brand">
-
-                <h3>
-                    VietTravel
-                </h3>
-
-                <p>
-                    Khám phá những địa điểm du lịch nổi bật
-                    và vẻ đẹp đa dạng của Việt Nam.
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
-                <a href="#home">
-                    Trang chủ
-                </a>
-
-                <a href="#locations">
-                    Địa điểm
-                </a>
-
-                <a href="#about">
-                    Về chúng tôi
-                </a>
-
-            </div>
-
-
-            <div class="footer-bottom">
-
-                <p>
-                    © 2026 VietTravel. All rights reserved.
-                </p>
-
-            </div>
+            <p>
+                © 2026 VietTravel - Khám phá Việt Nam
+            </p>
 
         </div>
 
     </footer>
 
 
-    <!-- =====================================================
+
+    <!-- ========================================
          MODAL
-    ====================================================== -->
+    ========================================= -->
 
     <div
         id="location-modal"
@@ -395,16 +364,43 @@
             >
 
 
-            <div class="modal-body">
+            <div class="modal-info">
 
                 <h2 id="modal-title">
                 </h2>
 
-                <p id="modal-province">
+
+                <p
+                    id="modal-province"
+                    class="modal-province"
+                >
                 </p>
+
+
+                <div
+                    id="modal-stats"
+                    class="modal-stats"
+                >
+                </div>
+
 
                 <p id="modal-description">
                 </p>
+
+
+                <div class="modal-actions">
+
+                    <a
+                        id="modal-map-link"
+                        class="map-button"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        🗺️ Xem bản đồ
+                    </a>
+
+                </div>
 
             </div>
 
@@ -413,24 +409,25 @@
     </div>
 
 
-    <!-- =====================================================
+
+    <!-- ========================================
          BACK TO TOP
-    ====================================================== -->
+    ========================================= -->
 
     <button
         id="back-to-top"
         class="back-to-top"
         type="button"
-        title="Lên đầu trang"
-        aria-label="Lên đầu trang"
+        aria-label="Quay lại đầu trang"
     >
         ↑
     </button>
 
 
-    <!-- =====================================================
+
+    <!-- ========================================
          JAVASCRIPT
-    ====================================================== -->
+    ========================================= -->
 
     <script src="js/app.js"></script>
 

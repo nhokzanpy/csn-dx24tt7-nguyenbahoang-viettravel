@@ -1,163 +1,443 @@
-// =========================
-// TẢI DỮ LIỆU ĐỊA ĐIỂM
-// =========================
+// ========================================
+// VIETTRAVEL - APP.JS
+// ========================================
+
+
+
+// ========================================
+// SCROLL REVEAL
+// ========================================
+
+const revealObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        entry.target
+                            .classList
+                            .add("show");
+
+                        revealObserver
+                            .unobserve(
+                                entry.target
+                            );
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold: 0.12
+        }
+
+    );
+
+
+
+function observeRevealElements() {
+
+    document
+        .querySelectorAll(
+            ".reveal:not(.show)"
+        )
+        .forEach(
+            element => {
+
+                revealObserver.observe(
+                    element
+                );
+
+            }
+        );
+
+}
+
+
+
+observeRevealElements();
+
+
+
+// ========================================
+// LOAD LOCATION DATA
+// ========================================
 
 fetch("data/location.json")
+
     .then(response => {
+
         if (!response.ok) {
-            throw new Error("Không thể tải location.json");
+
+            throw new Error(
+                "Không thể tải location.json"
+            );
+
         }
 
         return response.json();
+
     })
+
 
     .then(data => {
 
-        // =========================
-        // LẤY CÁC PHẦN TỬ HTML
-        // =========================
+
+        // ========================================
+        // FAVORITES
+        // ========================================
+
+        let favorites =
+            JSON.parse(
+                localStorage.getItem(
+                    "favorites"
+                )
+            ) || [];
+
+
+        let favoriteFilterActive =
+            false;
+
+
+
+        // ========================================
+        // HTML ELEMENTS
+        // ========================================
 
         const locationList =
-            document.getElementById("location-list");
+            document.getElementById(
+                "location-list"
+            );
+
 
         const searchInput =
-            document.getElementById("search-input");
+            document.getElementById(
+                "search-input"
+            );
+
 
         const provinceFilter =
-            document.getElementById("province-filter");
+            document.getElementById(
+                "province-filter"
+            );
+
 
         const sortFilter =
-            document.getElementById("sort-filter");
+            document.getElementById(
+                "sort-filter"
+            );
+
 
         const resetFilter =
-            document.getElementById("reset-filter");
+            document.getElementById(
+                "reset-filter"
+            );
+
 
         const pagination =
-            document.getElementById("pagination");
+            document.getElementById(
+                "pagination"
+            );
 
 
-        // =========================
+        const showAllButton =
+            document.getElementById(
+                "show-all"
+            );
+
+
+        const showFavoritesButton =
+            document.getElementById(
+                "show-favorites"
+            );
+
+
+        const randomLocationButton =
+            document.getElementById(
+                "random-location"
+            );
+
+
+
+        // ========================================
         // MODAL
-        // =========================
+        // ========================================
 
         const modal =
-            document.getElementById("location-modal");
+            document.getElementById(
+                "location-modal"
+            );
+
 
         const modalImage =
-            document.getElementById("modal-image");
+            document.getElementById(
+                "modal-image"
+            );
+
 
         const modalTitle =
-            document.getElementById("modal-title");
+            document.getElementById(
+                "modal-title"
+            );
+
 
         const modalProvince =
-            document.getElementById("modal-province");
+            document.getElementById(
+                "modal-province"
+            );
+
 
         const modalDescription =
-            document.getElementById("modal-description");
+            document.getElementById(
+                "modal-description"
+            );
+
+
+        const modalStats =
+            document.getElementById(
+                "modal-stats"
+            );
+
+
+        const modalMapLink =
+            document.getElementById(
+                "modal-map-link"
+            );
+
 
         const modalClose =
-            document.getElementById("modal-close");
+            document.getElementById(
+                "modal-close"
+            );
 
 
-        // =========================
-        // PHÂN TRANG
-        // =========================
+
+        // ========================================
+        // PAGINATION
+        // ========================================
 
         const itemsPerPage = 6;
 
         let currentPage = 1;
 
-        let currentLocations = [...data];
+        let currentLocations =
+            [...data];
 
 
-        // =========================
-        // HÀM BỎ DẤU TIẾNG VIỆT
-        // =========================
 
-        function removeVietnameseTones(str) {
+        // ========================================
+        // REMOVE VIETNAMESE TONES
+        // ========================================
+
+        function removeVietnameseTones(
+            str
+        ) {
+
             return str
+
                 .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/đ/g, "d")
-                .replace(/Đ/g, "D");
+
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                )
+
+                .replace(
+                    /đ/g,
+                    "d"
+                )
+
+                .replace(
+                    /Đ/g,
+                    "D"
+                );
+
         }
 
 
-        // =========================
-        // MỞ MODAL
-        // =========================
 
-        function openModal(location) {
+        // ========================================
+        // OPEN MODAL
+        // ========================================
+
+        function openModal(
+            location
+        ) {
 
             modalImage.src =
                 `images/${location.image}`;
 
+
             modalImage.alt =
                 location.name;
+
 
             modalTitle.textContent =
                 location.name;
 
+
             modalProvince.textContent =
                 `📍 ${location.province}`;
+
 
             modalDescription.textContent =
                 location.description;
 
-            modal.style.display = "flex";
+
+
+            modalStats.innerHTML = `
+
+                <span>
+                    ⭐ ${
+                        location.rating
+                        ?? "4.8"
+                    }
+                </span>
+
+                <span>
+                    ❤️ ${
+                        location.likes
+                        ?? 0
+                    }
+                </span>
+
+            `;
+
+
+
+            // ====================================
+            // GOOGLE MAP SEARCH
+            // ====================================
+
+            const mapQuery =
+                encodeURIComponent(
+
+                    `${location.name}, ${location.province}, Việt Nam`
+
+                );
+
+
+            modalMapLink.href =
+                `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
+
+
+            modal.style.display =
+                "flex";
+
+
+            document.body.style.overflow =
+                "hidden";
+
         }
 
 
-        // =========================
-        // ĐÓNG MODAL
-        // =========================
+
+        // ========================================
+        // CLOSE MODAL
+        // ========================================
 
         function closeModal() {
-            modal.style.display = "none";
+
+            modal.style.display =
+                "none";
+
+
+            document.body.style.overflow =
+                "";
+
         }
 
 
-        // =========================
-        // HIỂN THỊ ĐỊA ĐIỂM
-        // =========================
 
-        function displayLocations(locations) {
+        // ========================================
+        // DISPLAY LOCATIONS
+        // ========================================
 
-            locationList.innerHTML = "";
+        function displayLocations(
+            locations
+        ) {
+
+            locationList.innerHTML =
+                "";
 
 
-            // Không có kết quả
-            if (locations.length === 0) {
+
+            // ====================================
+            // NO RESULT
+            // ====================================
+
+            if (
+                locations.length === 0
+            ) {
 
                 locationList.innerHTML = `
-                    <div class="no-result">
+
+                    <div class="no-result reveal">
+
                         <div class="no-result-icon">
                             🔍
                         </div>
 
                         <h3>
-                            Không tìm thấy địa điểm
+
+                            ${
+                                favoriteFilterActive
+
+                                    ? "Chưa có địa điểm yêu thích"
+
+                                    : "Không tìm thấy địa điểm"
+                            }
+
                         </h3>
 
                         <p>
-                            Hãy thử tìm kiếm bằng từ khóa khác.
+
+                            ${
+                                favoriteFilterActive
+
+                                    ? "Hãy thả tim một địa điểm bạn yêu thích."
+
+                                    : "Hãy thử tìm kiếm bằng từ khóa khác."
+                            }
+
                         </p>
+
                     </div>
+
                 `;
 
+
+                observeRevealElements();
+
                 return;
+
             }
 
 
-            // =========================
-            // CẮT DỮ LIỆU THEO TRANG
-            // =========================
+
+            // ====================================
+            // PAGINATION SLICE
+            // ====================================
 
             const startIndex =
-                (currentPage - 1) * itemsPerPage;
+                (
+                    currentPage - 1
+                ) * itemsPerPage;
+
 
             const endIndex =
-                startIndex + itemsPerPage;
+                startIndex +
+                itemsPerPage;
+
 
             const paginatedLocations =
                 locations.slice(
@@ -166,52 +446,136 @@ fetch("data/location.json")
                 );
 
 
-            // =========================
-            // TẠO CARD
-            // =========================
+
+            // ====================================
+            // CARDS
+            // ====================================
 
             paginatedLocations.forEach(
-                (location, index) => {
+                (
+                    location,
+                    index
+                ) => {
+
 
                     const card =
-                        document.createElement("div");
+                        document.createElement(
+                            "article"
+                        );
+
 
                     card.className =
-                        "location-card";
+                        "location-card reveal";
 
 
-                    // Animation xuất hiện
-                    card.style.animationDelay =
-                        `${index * 0.08}s`;
+                    card.style.transitionDelay =
+                        `${index * 0.06}s`;
+
+
+
+                    const isFavorite =
+                        favorites.includes(
+                            location.name
+                        );
+
 
 
                     card.innerHTML = `
-                        <img
-                            src="images/${location.image}"
-                            alt="${location.name}"
-                        >
+
+                        <div class="location-image-wrapper">
+
+                            <img
+                                src="images/${location.image}"
+                                alt="${location.name}"
+                                loading="lazy"
+                            >
+
+
+                            <button
+                                class="favorite-btn ${
+                                    isFavorite
+                                        ? "active"
+                                        : ""
+                                }"
+                                type="button"
+                                aria-label="Yêu thích ${location.name}"
+                            >
+
+                                ${
+                                    isFavorite
+                                        ? "♥"
+                                        : "♡"
+                                }
+
+                            </button>
+
+                        </div>
+
+
 
                         <div class="location-card-content">
+
 
                             <h3>
                                 ${location.name}
                             </h3>
 
+
                             <p class="province">
                                 ${location.province}
                             </p>
 
-                            <p>
+
+
+                            <div class="location-stats">
+
+                                <span class="rating">
+
+                                    ⭐ ${
+                                        location.rating
+                                        ?? "4.8"
+                                    }
+
+                                </span>
+
+
+                                <span class="likes">
+
+                                    ❤️ ${
+                                        location.likes
+                                        ?? 0
+                                    }
+
+                                </span>
+
+                            </div>
+
+
+
+                            <p class="location-description">
+
                                 ${location.description}
+
                             </p>
 
-                            <button class="detail-button">
+
+
+                            <button
+                                class="detail-button"
+                                type="button"
+                            >
                                 Xem chi tiết
                             </button>
 
                         </div>
+
                     `;
 
+
+
+                    // ====================================
+                    // DETAIL BUTTON
+                    // ====================================
 
                     const detailButton =
                         card.querySelector(
@@ -221,67 +585,212 @@ fetch("data/location.json")
 
                     detailButton.addEventListener(
                         "click",
-                        () => {
-                            openModal(location);
+                        event => {
+
+                            event.stopPropagation();
+
+                            openModal(
+                                location
+                            );
+
                         }
                     );
 
 
-                    locationList.appendChild(card);
+
+                    // ====================================
+                    // CARD CLICK
+                    // ====================================
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            openModal(
+                                location
+                            );
+
+                        }
+                    );
+
+
+
+                    // ====================================
+                    // FAVORITE
+                    // ====================================
+
+                    const favoriteButton =
+                        card.querySelector(
+                            ".favorite-btn"
+                        );
+
+
+                    favoriteButton.addEventListener(
+                        "click",
+                        event => {
+
+                            event.stopPropagation();
+
+
+
+                            if (
+                                favorites.includes(
+                                    location.name
+                                )
+                            ) {
+
+                                favorites =
+                                    favorites.filter(
+                                        item =>
+                                            item !==
+                                            location.name
+                                    );
+
+
+                                favoriteButton
+                                    .classList
+                                    .remove(
+                                        "active"
+                                    );
+
+
+                                favoriteButton
+                                    .textContent =
+                                    "♡";
+
+                            }
+
+                            else {
+
+                                favorites.push(
+                                    location.name
+                                );
+
+
+                                favoriteButton
+                                    .classList
+                                    .add(
+                                        "active"
+                                    );
+
+
+                                favoriteButton
+                                    .textContent =
+                                    "♥";
+
+                            }
+
+
+
+                            localStorage.setItem(
+
+                                "favorites",
+
+                                JSON.stringify(
+                                    favorites
+                                )
+
+                            );
+
+
+
+                            if (
+                                favoriteFilterActive
+                            ) {
+
+                                filterLocations();
+
+                            }
+
+                        }
+                    );
+
+
+
+                    locationList.appendChild(
+                        card
+                    );
 
                 }
             );
+
+
+
+            // Observe cards vừa tạo
+            observeRevealElements();
+
         }
 
 
-        // =========================
-        // HIỂN THỊ PAGINATION
-        // =========================
 
-        function displayPagination(locations) {
+        // ========================================
+        // PAGINATION
+        // ========================================
 
-            pagination.innerHTML = "";
+        function displayPagination(
+            locations
+        ) {
+
+            pagination.innerHTML =
+                "";
 
 
             const totalPages =
                 Math.ceil(
+
                     locations.length /
                     itemsPerPage
+
                 );
 
 
-            // Nếu chỉ có 0 hoặc 1 trang
-            // thì không cần hiện pagination
-            if (totalPages <= 1) {
+
+            if (
+                totalPages <= 1
+            ) {
+
                 return;
+
             }
 
 
-            // =========================
-            // NÚT TRƯỚC
-            // =========================
+
+            // ====================================
+            // PREVIOUS
+            // ====================================
 
             const prevButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
-            prevButton.textContent = "‹";
+
+            prevButton.textContent =
+                "‹";
+
 
             prevButton.className =
                 "pagination-button";
 
+
             prevButton.disabled =
                 currentPage === 1;
+
 
 
             prevButton.addEventListener(
                 "click",
                 () => {
 
-                    if (currentPage > 1) {
+                    if (
+                        currentPage > 1
+                    ) {
 
                         currentPage--;
 
                         renderCurrentPage();
+
+                        scrollToLocations();
 
                     }
 
@@ -294,9 +803,10 @@ fetch("data/location.json")
             );
 
 
-            // =========================
-            // CÁC NÚT SỐ TRANG
-            // =========================
+
+            // ====================================
+            // PAGE BUTTONS
+            // ====================================
 
             for (
                 let page = 1;
@@ -309,29 +819,41 @@ fetch("data/location.json")
                         "button"
                     );
 
+
                 pageButton.textContent =
                     page;
+
 
                 pageButton.className =
                     "pagination-button";
 
 
-                if (page === currentPage) {
+                if (
+                    page === currentPage
+                ) {
 
-                    pageButton.classList.add(
-                        "active"
-                    );
+                    pageButton
+                        .classList
+                        .add(
+                            "active"
+                        );
 
                 }
+
 
 
                 pageButton.addEventListener(
                     "click",
                     () => {
 
-                        currentPage = page;
+                        currentPage =
+                            page;
+
 
                         renderCurrentPage();
+
+
+                        scrollToLocations();
 
                     }
                 );
@@ -344,20 +866,29 @@ fetch("data/location.json")
             }
 
 
-            // =========================
-            // NÚT SAU
-            // =========================
+
+            // ====================================
+            // NEXT
+            // ====================================
 
             const nextButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
-            nextButton.textContent = "›";
+
+            nextButton.textContent =
+                "›";
+
 
             nextButton.className =
                 "pagination-button";
 
+
             nextButton.disabled =
-                currentPage === totalPages;
+                currentPage ===
+                totalPages;
+
 
 
             nextButton.addEventListener(
@@ -373,6 +904,8 @@ fetch("data/location.json")
 
                         renderCurrentPage();
 
+                        scrollToLocations();
+
                     }
 
                 }
@@ -382,18 +915,48 @@ fetch("data/location.json")
             pagination.appendChild(
                 nextButton
             );
+
         }
 
 
-        // =========================
-        // RENDER TRANG HIỆN TẠI
-        // =========================
+
+        // ========================================
+        // SCROLL TO LOCATIONS
+        // ========================================
+
+        function scrollToLocations() {
+
+            const locationsSection =
+                document.getElementById(
+                    "locations"
+                );
+
+
+            locationsSection
+                ?.scrollIntoView({
+
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+
+                });
+
+        }
+
+
+
+        // ========================================
+        // RENDER
+        // ========================================
 
         function renderCurrentPage() {
 
             displayLocations(
                 currentLocations
             );
+
 
             displayPagination(
                 currentLocations
@@ -402,43 +965,69 @@ fetch("data/location.json")
         }
 
 
-        // =========================
-        // TẠO DANH SÁCH TỈNH/THÀNH
-        // =========================
+
+        // ========================================
+        // PROVINCES
+        // ========================================
 
         const provinces = [
+
             ...new Set(
+
                 data.map(
                     location =>
                         location.province
                 )
+
             )
+
         ];
 
 
-        provinces.forEach(province => {
 
-            const option =
-                document.createElement(
-                    "option"
+        provinces.sort(
+            (
+                a,
+                b
+            ) =>
+
+                a.localeCompare(
+                    b,
+                    "vi"
+                )
+        );
+
+
+
+        provinces.forEach(
+            province => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    province;
+
+
+                option.textContent =
+                    province;
+
+
+                provinceFilter.appendChild(
+                    option
                 );
 
-            option.value =
-                province;
-
-            option.textContent =
-                province;
-
-            provinceFilter.appendChild(
-                option
-            );
-
-        });
+            }
+        );
 
 
-        // =========================
-        // SEARCH + FILTER + SORT
-        // =========================
+
+        // ========================================
+        // FILTER
+        // ========================================
 
         function filterLocations() {
 
@@ -446,8 +1035,20 @@ fetch("data/location.json")
                 removeVietnameseTones(
                     searchInput.value
                 )
+
                     .trim()
+
                     .toLowerCase();
+
+
+
+            const keywords =
+                keyword
+
+                    .split(/\s+/)
+
+                    .filter(Boolean);
+
 
 
             const selectedProvince =
@@ -458,57 +1059,88 @@ fetch("data/location.json")
                 sortFilter.value;
 
 
+
             let filteredLocations =
-                data.filter(location => {
-
-                    const name =
-                        removeVietnameseTones(
-                            location.name
-                        ).toLowerCase();
+                data.filter(
+                    location => {
 
 
-                    const province =
-                        removeVietnameseTones(
-                            location.province
-                        ).toLowerCase();
+                        const searchableText =
+                            removeVietnameseTones(
+
+                                `${location.name}
+                                 ${location.province}
+                                 ${location.description}`
+
+                            )
+
+                                .toLowerCase();
 
 
-                    const description =
-                        removeVietnameseTones(
-                            location.description
-                        ).toLowerCase();
+
+                        const matchesSearch =
+
+                            keywords.length === 0 ||
+
+                            keywords.every(
+                                word =>
+
+                                    searchableText
+                                        .includes(
+                                            word
+                                        )
+                            );
 
 
-                    const matchesSearch =
-                        name.includes(keyword) ||
-                        province.includes(keyword) ||
-                        description.includes(keyword);
+
+                        const matchesProvince =
+
+                            selectedProvince ===
+                                "all" ||
+
+                            location.province ===
+                                selectedProvince;
 
 
-                    const matchesProvince =
-                        selectedProvince === "all" ||
-                        location.province ===
-                            selectedProvince;
+
+                        const matchesFavorite =
+
+                            !favoriteFilterActive ||
+
+                            favorites.includes(
+                                location.name
+                            );
 
 
-                    return (
-                        matchesSearch &&
-                        matchesProvince
-                    );
 
-                });
+                        return (
+
+                            matchesSearch &&
+
+                            matchesProvince &&
+
+                            matchesFavorite
+
+                        );
+
+                    }
+                );
 
 
-            // =========================
-            // SORT A → Z
-            // =========================
+
+            // A → Z
 
             if (
-                selectedSort === "az"
+                selectedSort ===
+                "az"
             ) {
 
                 filteredLocations.sort(
-                    (a, b) =>
+                    (
+                        a,
+                        b
+                    ) =>
+
                         a.name.localeCompare(
                             b.name,
                             "vi"
@@ -518,16 +1150,20 @@ fetch("data/location.json")
             }
 
 
-            // =========================
-            // SORT Z → A
-            // =========================
+
+            // Z → A
 
             if (
-                selectedSort === "za"
+                selectedSort ===
+                "za"
             ) {
 
                 filteredLocations.sort(
-                    (a, b) =>
+                    (
+                        a,
+                        b
+                    ) =>
+
                         b.name.localeCompare(
                             a.name,
                             "vi"
@@ -537,23 +1173,24 @@ fetch("data/location.json")
             }
 
 
-            // Lưu kết quả mới
+
             currentLocations =
                 filteredLocations;
 
 
-            // Mỗi khi filter/search/sort
-            // quay về trang đầu
-            currentPage = 1;
+            currentPage =
+                1;
 
 
             renderCurrentPage();
+
         }
 
 
-        // =========================
+
+        // ========================================
         // SEARCH
-        // =========================
+        // ========================================
 
         searchInput.addEventListener(
             "input",
@@ -561,9 +1198,10 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // FILTER TỈNH/THÀNH
-        // =========================
+
+        // ========================================
+        // PROVINCE
+        // ========================================
 
         provinceFilter.addEventListener(
             "change",
@@ -571,9 +1209,10 @@ fetch("data/location.json")
         );
 
 
-        // =========================
+
+        // ========================================
         // SORT
-        // =========================
+        // ========================================
 
         sortFilter.addEventListener(
             "change",
@@ -581,26 +1220,151 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // RESET FILTER
-        // =========================
+
+        // ========================================
+        // SHOW ALL
+        // ========================================
+
+        showAllButton.addEventListener(
+            "click",
+            () => {
+
+                favoriteFilterActive =
+                    false;
+
+
+                showAllButton
+                    .classList
+                    .add(
+                        "active"
+                    );
+
+
+                showFavoritesButton
+                    .classList
+                    .remove(
+                        "active"
+                    );
+
+
+                filterLocations();
+
+            }
+        );
+
+
+
+        // ========================================
+        // SHOW FAVORITES
+        // ========================================
+
+        showFavoritesButton.addEventListener(
+            "click",
+            () => {
+
+                favoriteFilterActive =
+                    true;
+
+
+                showFavoritesButton
+                    .classList
+                    .add(
+                        "active"
+                    );
+
+
+                showAllButton
+                    .classList
+                    .remove(
+                        "active"
+                    );
+
+
+                filterLocations();
+
+            }
+        );
+
+
+
+        // ========================================
+        // RANDOM LOCATION 🎲
+        // ========================================
+
+        randomLocationButton.addEventListener(
+            "click",
+            () => {
+
+
+                const randomIndex =
+                    Math.floor(
+
+                        Math.random() *
+                        data.length
+
+                    );
+
+
+                const randomLocation =
+                    data[
+                        randomIndex
+                    ];
+
+
+                openModal(
+                    randomLocation
+                );
+
+            }
+        );
+
+
+
+        // ========================================
+        // RESET
+        // ========================================
 
         resetFilter.addEventListener(
             "click",
             () => {
 
-                searchInput.value = "";
+                searchInput.value =
+                    "";
+
 
                 provinceFilter.value =
                     "all";
 
+
                 sortFilter.value =
                     "default";
+
+
+                favoriteFilterActive =
+                    false;
+
+
+                showAllButton
+                    .classList
+                    .add(
+                        "active"
+                    );
+
+
+                showFavoritesButton
+                    .classList
+                    .remove(
+                        "active"
+                    );
+
 
                 currentLocations =
                     [...data];
 
-                currentPage = 1;
+
+                currentPage =
+                    1;
+
 
                 renderCurrentPage();
 
@@ -608,9 +1372,10 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // ĐÓNG MODAL BẰNG ×
-        // =========================
+
+        // ========================================
+        // MODAL CLOSE
+        // ========================================
 
         modalClose.addEventListener(
             "click",
@@ -618,16 +1383,14 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // CLICK NGOÀI MODAL
-        // =========================
 
         modal.addEventListener(
             "click",
             event => {
 
                 if (
-                    event.target === modal
+                    event.target ===
+                    modal
                 ) {
 
                     closeModal();
@@ -638,9 +1401,6 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // ESC ĐÓNG MODAL
-        // =========================
 
         document.addEventListener(
             "keydown",
@@ -659,18 +1419,15 @@ fetch("data/location.json")
         );
 
 
-        // =========================
-        // HIỂN THỊ BAN ĐẦU
-        // =========================
+
+        // ========================================
+        // INITIAL RENDER
+        // ========================================
 
         renderCurrentPage();
 
     })
 
-
-    // =========================
-    // XỬ LÝ LỖI
-    // =========================
 
     .catch(error => {
 
@@ -680,6 +1437,7 @@ fetch("data/location.json")
         );
 
     });
+
 
 
 // ========================================
@@ -692,41 +1450,60 @@ const backToTop =
     );
 
 
-window.addEventListener(
-    "scroll",
-    () => {
+if (
+    backToTop
+) {
 
-        if (
-            window.scrollY > 300
-        ) {
+    window.addEventListener(
+        "scroll",
+        () => {
 
-            backToTop.classList.add(
-                "show"
-            );
+            if (
+                window.scrollY >
+                300
+            ) {
 
-        } else {
+                backToTop
+                    .classList
+                    .add(
+                        "show"
+                    );
 
-            backToTop.classList.remove(
-                "show"
-            );
+            }
+
+            else {
+
+                backToTop
+                    .classList
+                    .remove(
+                        "show"
+                    );
+
+            }
 
         }
-
-    }
-);
+    );
 
 
-backToTop.addEventListener(
-    "click",
-    () => {
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+    backToTop.addEventListener(
+        "click",
+        () => {
 
-    }
-);
+            window.scrollTo({
+
+                top: 0,
+
+                behavior:
+                    "smooth"
+
+            });
+
+        }
+    );
+
+}
+
 
 
 // ========================================
@@ -739,73 +1516,90 @@ const themeToggle =
     );
 
 
-const savedTheme =
-    localStorage.getItem(
-        "theme"
-    );
-
-
 if (
-    savedTheme === "dark"
+    themeToggle
 ) {
 
-    document.body.classList.add(
-        "dark-mode"
-    );
-
-    themeToggle.textContent =
-        "☀️";
-
-} else {
-
-    themeToggle.textContent =
-        "🌙";
-
-}
-
-
-// =========================
-// ĐỔI LIGHT / DARK MODE
-// =========================
-
-themeToggle.addEventListener(
-    "click",
-    () => {
-
-        document.body.classList.toggle(
-            "dark-mode"
+    const savedTheme =
+        localStorage.getItem(
+            "theme"
         );
 
 
-        const isDarkMode =
-            document.body.classList.contains(
+    if (
+        savedTheme ===
+        "dark"
+    ) {
+
+        document.body
+            .classList
+            .add(
                 "dark-mode"
             );
 
 
-        if (
-            isDarkMode
-        ) {
-
-            themeToggle.textContent =
-                "☀️";
-
-            localStorage.setItem(
-                "theme",
-                "dark"
-            );
-
-        } else {
-
-            themeToggle.textContent =
-                "🌙";
-
-            localStorage.setItem(
-                "theme",
-                "light"
-            );
-
-        }
+        themeToggle.textContent =
+            "☀️";
 
     }
-);
+
+    else {
+
+        themeToggle.textContent =
+            "🌙";
+
+    }
+
+
+
+    themeToggle.addEventListener(
+        "click",
+        () => {
+
+            document.body
+                .classList
+                .toggle(
+                    "dark-mode"
+                );
+
+
+            const isDarkMode =
+                document.body
+                    .classList
+                    .contains(
+                        "dark-mode"
+                    );
+
+
+            if (
+                isDarkMode
+            ) {
+
+                themeToggle.textContent =
+                    "☀️";
+
+
+                localStorage.setItem(
+                    "theme",
+                    "dark"
+                );
+
+            }
+
+            else {
+
+                themeToggle.textContent =
+                    "🌙";
+
+
+                localStorage.setItem(
+                    "theme",
+                    "light"
+                );
+
+            }
+
+        }
+    );
+
+}
