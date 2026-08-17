@@ -1,0 +1,107 @@
+[
+    {
+        "id": 1,
+        "name": "Vịnh Hạ Long",
+        "province": "Quảng Ninh",
+        "description": "Vịnh Hạ Long nổi tiếng với hàng nghìn đảo đá và cảnh quan thiên nhiên tuyệt đẹp.",
+        "image": "halong.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Phố cổ Hội An",
+        "province": "Quảng Nam",
+        "description": "Hội An là đô thị cổ nổi tiếng với kiến trúc truyền thống và không gian văn hóa đặc sắc.",
+        "image": "hoian.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Đà Nẵng",
+        "province": "Đà Nẵng",
+        "description": "Đà Nẵng nổi tiếng với những bãi biển đẹp, cầu Rồng và nhiều điểm tham quan.",
+        "image": "danang.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Đà Lạt",
+        "province": "Lâm Đồng",
+        "description": "Đà Lạt được biết đến với khí hậu mát mẻ, cảnh quan lãng mạn và những đồi thông xanh.",
+        "image": "dalat.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Phú Quốc",
+        "province": "Kiên Giang",
+        "description": "Phú Quốc nổi tiếng với biển xanh, cát trắng và nhiều khu nghỉ dưỡng.",
+        "image": "phuquoc.jpg"
+    },
+    {
+        "id": 6,
+        "name": "Sa Pa",
+        "province": "Lào Cai",
+        "description": "Sa Pa nổi tiếng với khí hậu mát mẻ, ruộng bậc thang và khung cảnh núi rừng Tây Bắc hùng vĩ.",
+        "image": "sapa.jpg"
+    },
+    {
+        "id": 7,
+        "name": "Tràng An",
+        "province": "Ninh Bình",
+        "description": "Tràng An hấp dẫn du khách với hệ thống núi đá vôi, hang động và những dòng sông uốn lượn giữa thiên nhiên.",
+        "image": "trangan.jpg"
+    },
+    {
+        "id": 8,
+        "name": "Cố đô Huế",
+        "province": "Huế",
+        "description": "Cố đô Huế nổi bật với quần thể di tích lịch sử, kiến trúc cung đình và nét văn hóa đặc trưng.",
+        "image": "hue.jpg"
+    },
+    {
+        "id": 9,
+        "name": "Nha Trang",
+        "province": "Khánh Hòa",
+        "description": "Nha Trang là thành phố biển nổi tiếng với bãi biển đẹp, làn nước trong xanh và nhiều hoạt động du lịch hấp dẫn.",
+        "image": "nhatrang.jpg"
+    },
+    {
+        "id": 10,
+        "name": "Mũi Né",
+        "province": "Bình Thuận",
+        "description": "Mũi Né thu hút du khách với những bãi biển dài, đồi cát rộng lớn và cảnh quan ven biển đặc sắc.",
+        "image": "muine.jpg"
+    },
+    {
+        "id": 11,
+        "name": "Phong Nha - Kẻ Bàng",
+        "province": "Quảng Bình",
+        "description": "Phong Nha - Kẻ Bàng nổi tiếng với hệ thống hang động kỳ vĩ, núi đá vôi và cảnh quan thiên nhiên độc đáo.",
+        "image": "phongnha.jpg"
+    },
+    {
+        "id": 12,
+        "name": "Hà Giang",
+        "province": "Hà Giang",
+        "description": "Hà Giang gây ấn tượng với những cung đường đèo ngoạn mục, cao nguyên đá và phong cảnh núi non hùng vĩ.",
+        "image": "hagiang.jpg"
+    },
+    {
+        "id": 13,
+        "name": "Hồ Hoàn Kiếm",
+        "province": "Hà Nội",
+        "description": "Hồ Hoàn Kiếm là địa danh nổi tiếng giữa trung tâm Hà Nội, gắn liền với lịch sử và văn hóa của thủ đô.",
+        "image": "hoankiem.jpg"
+    },
+    {
+        "id": 14,
+        "name": "Côn Đảo",
+        "province": "Bà Rịa - Vũng Tàu",
+        "description": "Côn Đảo nổi tiếng với những bãi biển hoang sơ, làn nước trong xanh và nhiều di tích lịch sử.",
+        "image": "condao.jpg"
+    },
+    {
+        "id": 15,
+        "name": "Núi Bà Đen",
+        "province": "Tây Ninh",
+        "description": "Núi Bà Đen là điểm đến nổi bật của Tây Ninh với phong cảnh núi non, khu du lịch và không gian tâm linh.",
+        "image": "baden.jpg"
+    }
+]

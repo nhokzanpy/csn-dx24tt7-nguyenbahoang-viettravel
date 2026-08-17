@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VietTravel - Khám phá Việt Nam</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         HEADER / MENU
+    ========================== -->
+
+    <header>
+        <nav>
+            <div class="logo">VietTravel</div>
+
+            <ul class="nav-links">
+                <li><a href="#home">Trang chủ</a></li>
+                <li><a href="#locations">Địa điểm</a></li>
+                <li><a href="#about">Về chúng tôi</a></li>
+            </ul>
+            <button
+    id="theme-toggle"
+    class="theme-toggle"
+    aria-label="Đổi giao diện sáng/tối"
+>
+    🌙
+</button>
+        </nav>
+    </header>
+
+
+    <!-- =========================
+         HERO / TRANG CHỦ
+    ========================== -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+            <h1>Khám phá vẻ đẹp Việt Nam</h1>
+
+            <p>
+                Những điểm đến tuyệt vời đang chờ bạn khám phá
+            </p>
+
+            <button
+                onclick="document.getElementById('locations').scrollIntoView({ behavior: 'smooth' })"
+            >
+                Khám phá ngay
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         DANH SÁCH ĐỊA ĐIỂM
+    ========================== -->
+
+    <section class="locations" id="locations">
+
+        <div class="container">
+
+            <!-- SEARCH + FILTER + SORT -->
+
+            <div class="filter-bar">
+
+                <!-- Ô tìm kiếm -->
+
+                <div class="search-box">
+                    <span class="search-icon">🔎</span>
+
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Tìm kiếm địa điểm..."
+                    >
+                </div>
+
+
+                <!-- Lọc tỉnh/thành -->
+
+                <select id="province-filter">
+                    <option value="all">
+                        Tất cả tỉnh/thành
+                    </option>
+                </select>
+
+
+                <!-- Sắp xếp -->
+
+                <select id="sort-filter">
+                    <option value="default">
+                        Sắp xếp
+                    </option>
+
+                    <option value="az">
+                        Tên A → Z
+                    </option>
+
+                    <option value="za">
+                        Tên Z → A
+                    </option>
+                </select>
+
+
+                <!-- Reset -->
+
+                <button
+                    id="reset-filter"
+                    class="reset-filter"
+                >
+                    <span>↻</span>
+                    Xóa bộ lọc
+                </button>
+
+            </div>
+
+
+            <h2>Điểm đến nổi bật</h2>
+
+
+            <!-- JavaScript tạo card tại đây -->
+
+            <!-- =========================
+     DANH SÁCH ĐỊA ĐIỂM
+========================= -->
+
+<div
+    id="location-list"
+    class="location-list"
+>
+    <!-- JavaScript tạo card tại đây -->
+</div>
+
+
+<!-- =========================
+     PHÂN TRANG
+========================= -->
+
+<div
+    id="pagination"
+    class="pagination"
+>
+</div>
+    </section>
+
+
+    <!-- =========================
+         VỀ CHÚNG TÔI
+    ========================== -->
+
+    <section class="about" id="about">
+
+        <div class="about-container">
+
+            <h2>Về chúng tôi</h2>
+
+            <p>
+                VietTravel là website giới thiệu những địa điểm
+                du lịch nổi bật tại Việt Nam.
+            </p>
+
+            <p>
+                Chúng tôi mong muốn mang đến cho người dùng
+                những thông tin hữu ích về các địa điểm du lịch,
+                văn hóa và cảnh đẹp trên khắp đất nước.
+            </p>
+
+            <p>
+                Hãy cùng VietTravel khám phá vẻ đẹp đa dạng
+                và đầy hấp dẫn của Việt Nam.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+                <h3>VietTravel</h3>
+
+                <p>
+                    Khám phá những địa điểm du lịch nổi bật
+                    và vẻ đẹp đa dạng của Việt Nam.
+                </p>
+            </div>
+
+
+            <div class="footer-links">
+                <a href="#home">Trang chủ</a>
+                <a href="#locations">Địa điểm</a>
+                <a href="#about">Về chúng tôi</a>
+            </div>
+
+
+            <div class="footer-bottom">
+                <p>
+                    © 2026 VietTravel. All rights reserved.
+                </p>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         MODAL CHI TIẾT
+    ========================== -->
+
+    <div
+        id="location-modal"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <button
+                id="modal-close"
+                class="modal-close"
+                aria-label="Đóng"
+            >
+                ×
+            </button>
+
+
+            <img
+                id="modal-image"
+                src=""
+                alt=""
+            >
+
+
+            <div class="modal-body">
+                <h2 id="modal-title"></h2>
+
+                <p id="modal-province"></p>
+
+                <p id="modal-description"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         NÚT LÊN ĐẦU TRANG
+    ========================== -->
+
+    <button
+        id="back-to-top"
+        class="back-to-top"
+        title="Lên đầu trang"
+        aria-label="Lên đầu trang"
+    >
+        ↑
+    </button>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
