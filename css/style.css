@@ -1413,3 +1413,150 @@ body.dark-mode #modal-province {
     }
 
 }
+/* ========================================
+   FINAL MOBILE FILTER UI
+======================================== */
+
+@media (max-width: 768px) {
+
+    /* FILTER CONTAINER */
+
+    .filter-bar {
+        width: 100%;
+        max-width: 420px;
+
+        margin: 0 auto 32px;
+        padding: 0 20px;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 12px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .filter-bar .search-box {
+        width: 100%;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+
+        box-sizing: border-box;
+    }
+
+    .filter-bar .search-box input {
+        width: 100%;
+        height: 100%;
+
+        font-size: 15px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================
+       SELECT / DROPDOWN
+    ========================= */
+
+    .filter-bar select,
+    .filter-bar #province-filter,
+    .filter-bar #sort-filter {
+        width: 100% !important;
+
+        height: 48px !important;
+        min-height: 48px !important;
+
+        padding: 0 18px !important;
+
+        border-radius: 24px !important;
+
+        font-size: 15px !important;
+        line-height: normal !important;
+
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+
+        appearance: auto;
+        -webkit-appearance: auto;
+    }
+
+
+    /* =========================
+       RESET
+    ========================= */
+
+    .filter-bar .reset-filter {
+        width: 100% !important;
+
+        height: 48px !important;
+        min-height: 48px !important;
+
+        padding: 0 18px !important;
+
+        border-radius: 24px !important;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        box-sizing: border-box;
+
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+
+    /* =========================
+       TITLE
+    ========================= */
+
+    .locations h2 {
+        margin-top: 4px;
+        margin-bottom: 26px;
+
+        font-size: 26px;
+    }
+}
+@media (max-width: 768px) {
+
+    .filter-bar #province-filter,
+    .filter-bar #sort-filter {
+        height: 48px !important;
+        min-height: 48px !important;
+
+        padding: 0 18px !important;
+
+        border-radius: 24px !important;
+
+        font-size: 15px !important;
+
+        line-height: 48px !important;
+
+        appearance: none;
+        -webkit-appearance: none;
+
+        background-image:
+            linear-gradient(45deg, transparent 50%, #cbd5e1 50%),
+            linear-gradient(135deg, #cbd5e1 50%, transparent 50%);
+
+        background-position:
+            calc(100% - 18px) 20px,
+            calc(100% - 13px) 20px;
+
+        background-size:
+            5px 5px,
+            5px 5px;
+
+        background-repeat: no-repeat;
+    }
+}
